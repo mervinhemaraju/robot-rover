@@ -9,7 +9,7 @@ owned:
     status: in_use
     notes: Phase 1 in progress — OS flashed, WiFi/SSH working
 
-  - item: MicroSD card 16GB+ Class 10
+  - item: MicroSD card 64GB Class 10
     qty: 1
     source: Already owned
     status: in_use

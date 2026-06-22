@@ -118,6 +118,7 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 
 | Path | What it is |
 | --- | --- |
+| `arduino/` | Arduino sketches — `motor_first_test/` for Phase 2 hardware validation, real motor sketch to follow |
 | `remote-controller/` | Flutter mobile app (Phase 3+) — WebSocket control, MJPEG live feed, joystick + buttons UI, telemetry overlays |
 | `docs/` | Per-phase and per-topic setup guides, written after each session with `/log-progress` |
 | `~/rover/control/` | Python WebSocket server on the Pi (Phase 3+) |
@@ -166,5 +167,14 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 * `python3-pip`, `python3-venv`, `git` installed.
 * `~/rover/{control,camera,logs}` directory structure created. Python venv set up.
 * Bluetooth confirmed working: `hci0 UP RUNNING`, soft-block resolved via `rfkill unblock bluetooth` (state persists across reboots via systemd-rfkill).
+
+**Phase 2 status:** Blocked on hardware. Pre-work complete.
+
+* `arduino/motor_first_test/motor_first_test.ino` written and ready to upload when Arduino arrives.
+* Buck converter setup guide written (`docs/power/buck-converter-setup.md`), including potentiometer locking step.
+* Testing order defined: L298N + motors manually first, then Arduino via Serial Monitor, then Pi serial script, then app.
+* Blocked: Arduino Uno R4 Minima, Waveshare chassis kit, and buck converter all in transit from Pi Hut UK.
+
+**Phase 3 pre-work (Flutter app):** UI complete and ahead of schedule. `remote-controller/` Flutter app has joystick, Accelerate/Brake/Reverse buttons, and MJPEG camera feed screen built. Needs wiring to live WebSocket and camera stream once Phase 2 and 3 backend are ready.
 
 **Parts tracking:** See `.claude/inventory.yaml` — read this before suggesting any wiring or purchasing step.
