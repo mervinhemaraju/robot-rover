@@ -69,7 +69,7 @@ Optional future: remote access over the internet (not just local WiFi) via Tails
 * Jumper wires M-M, M-F, F-F — already owned.
 * USB-A to USB-C cable — already owned (Arduino Uno R4 Minima uses USB-C, not USB-B).
 * Phillips screwdriver — already owned.
-* MicroSD card 16GB+ Class 10 — already owned.
+* MicroSD card 64GB Class 10 — in use.
 * Velcro cable straps, mixed colors, 50pcs (Temu) — reusable cable management.
 
 ### Rejected alternatives (with reasoning, for context)
@@ -86,7 +86,7 @@ Optional future: remote access over the internet (not just local WiFi) via Tails
 
 ## Build phases
 
-**Phase 1 — Brain setup** *(in progress)*
+**Phase 1 — Brain setup** ✅ *complete*
 Flash Raspberry Pi OS (64-bit Lite), configure WiFi + Bluetooth, SSH access (ed25519 key auth), install Python dependencies.
 Deliverable: Pi reachable over WiFi from laptop.
 
@@ -117,7 +117,7 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 ## Repository layout
 
 | Path | What it is |
-|---|---|
+| --- | --- |
 | `remote-controller/` | Flutter mobile app (Phase 3+) — WebSocket control, MJPEG live feed, joystick + buttons UI, telemetry overlays |
 | `docs/` | Per-phase and per-topic setup guides, written after each session with `/log-progress` |
 | `~/rover/control/` | Python WebSocket server on the Pi (Phase 3+) |
@@ -156,17 +156,15 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 
 ## Current state (update this section as the project progresses)
 
-**Phase 1 status:** In progress.
+**Phase 1 status:** ✅ Complete.
 
-* Pi 3B flashed with Raspberry Pi OS (64-bit Lite), hostname `th3pl4gu3-rover`, user `th3pl4gu3`, SSH key auth (ed25519) configured.
+* Pi 3B flashed with Raspberry Pi OS (64-bit Lite), hostname `th3pl4gu3-rover`, user `th3pl4gu3`, SSH key auth (ed25519) configured. 64GB microSD card in use.
 * Resolved: boot loop caused by underpowered USB source (Mac port) — fixed with proper wall charger.
-* Resolved: WiFi/filesystem corruption after an abrupt power loss — fixed by re-flashing and now always shutting down cleanly first.
-* Pi successfully joins WiFi (hidden SSID network), reachable via SSH using DHCP-reserved IP (currently `192.168.0.69`; reservation for `192.168.0.4` was configured on the router but has not yet taken effect — not a blocker, current IP is stable across reboots).
+* Resolved: WiFi/filesystem corruption after an abrupt power loss — fixed by re-flashing and always shutting down cleanly.
+* Pi joins WiFi (hidden SSID), reachable via SSH. DHCP-reserved IP `192.168.0.4` confirmed active.
 * System updated (`apt update && full-upgrade`), Python 3.13 confirmed present.
-* **Remaining before Phase 1 is complete:**
-  * Install `python3-pip`, `python3-venv`, `git`
-  * Create `~/rover/{control,camera,logs}` project structure
-  * Set up Python venv (`python3 -m venv venv`)
-  * Verify Bluetooth (`systemctl status bluetooth`, `hciconfig`) — **not yet confirmed working**
+* `python3-pip`, `python3-venv`, `git` installed.
+* `~/rover/{control,camera,logs}` directory structure created. Python venv set up.
+* Bluetooth confirmed working: `hci0 UP RUNNING`, soft-block resolved via `rfkill unblock bluetooth` (state persists across reboots via systemd-rfkill).
 
 **Parts tracking:** See `.claude/inventory.yaml` — read this before suggesting any wiring or purchasing step.
