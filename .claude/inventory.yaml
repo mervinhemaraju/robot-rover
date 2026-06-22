@@ -1,0 +1,158 @@
+# Update this file as parts arrive, get used, or get deferred.
+# Claude Code should read this before suggesting any wiring or purchasing step,
+# and update the relevant section when told something has changed status.
+
+owned:
+  - item: Raspberry Pi 3 Model B
+    qty: 1
+    source: Already owned
+    status: in_use
+    notes: Phase 1 in progress — OS flashed, WiFi/SSH working
+
+  - item: MicroSD card 16GB+ Class 10
+    qty: 1
+    source: Already owned
+    status: in_use
+
+  - item: USB-A to USB-C cable
+    qty: 1
+    source: Already owned
+    status: in_use
+    notes: For Arduino Uno R4 Minima
+
+  - item: Phillips screwdriver
+    qty: 1
+    source: Already owned
+    status: in_use
+
+  - item: Jumper wires (M-M, M-F, F-F)
+    qty: assorted
+    source: Already owned
+    status: in_use
+    notes: Confirmed sufficient quantity/variety
+
+  - item: 18650 Li-ion cell, 3.7V 3000mAh
+    qty: 2
+    source: Advanced M (local, Mauritius)
+    status: in_use
+    notes: Cannot be shipped internationally to Mauritius — sourced locally
+
+  - item: Half-size breadboard
+    qty: 1
+    source: Advanced M (local, Mauritius)
+    status: in_use
+    notes: 400 tie points
+
+  - item: L298N dual H-bridge motor driver
+    qty: 2
+    spare: 1
+    source: Temu
+    status: received
+    notes: Confirmed correct module from product photo
+
+  - item: 18650 battery holder, 2-slot, series 7.4V
+    qty: 2
+    spare: 1
+    source: Temu
+    status: received
+    notes: Fully enclosed, built-in ON/OFF switch, bare wire + DC barrel jack leads
+
+  - item: Velcro cable straps, mixed colors
+    qty: 50
+    source: Temu
+    status: received
+    notes: Reusable cable management
+
+  - item: ANENG DM850 digital multimeter
+    qty: 1
+    source: Temu
+    status: received
+    notes: For verifying buck converter / battery voltage
+
+  - item: VariCore VC-Q4 4-slot 18650 charger
+    qty: 1
+    source: AliExpress
+    status: received
+    notes: CE/FCC/RoHS certified, USB-C input
+
+in_transit:
+  - item: Arduino Uno R4 Minima
+    qty: 1
+    source: Pi Hut (UK)
+    notes: Via Shop & Ship (US forwarding address) — US import duty paid, Mauritius duty still pending on arrival
+
+  - item: Waveshare Robot Chassis Kit NS
+    qty: 1
+    source: Pi Hut (UK)
+    notes: Double-deck, 4× TT motors (6–9V, 190RPM@6V, 160mA) bundled, no encoders
+
+  - item: Photo Interrupter Sensor
+    qty: 4
+    source: Pi Hut (UK)
+    notes: Waveshare, includes 20-slot encoder disk each — one per motor
+
+  - item: Raspberry Pi Camera Module v2 (8MP)
+    qty: 1
+    source: Pi Hut (UK)
+    notes: Standard CSI ribbon, fits Pi 3B directly
+
+  - item: 20W Adjustable DC-DC Buck Converter w/ digital display
+    qty: 1
+    source: Pi Hut (UK)
+    notes: Must be manually set to exactly 5V, verified with multimeter, before connecting to Pi
+
+  - item: Half-size breadboard (spare)
+    qty: 1
+    source: Pi Hut (UK)
+    notes: Backup — local one already in use
+
+deferred:
+  - item: SG90 servo motor
+    qty: 2
+    planned_phase: Phase 5
+    notes: Pan-tilt camera mount
+
+  - item: Pan-tilt bracket (for SG90)
+    qty: 1
+    planned_phase: Phase 5
+    notes: Or buy as combined "Mini Pan-Tilt Kit" (Pi Hut) instead of separately
+
+  - item: PCA9685 PWM expander
+    qty: 1
+    planned_phase: "Phase 5 (conditional)"
+    notes: Only if servo count exceeds Arduino's available PWM pins
+
+  - item: Ultrasonic sensor (e.g. HC-SR04)
+    qty: "1+"
+    planned_phase: Phase 5
+    notes: Obstacle sensing
+
+  - item: MG996R or similar servo (arms/hands)
+    qty: TBD
+    planned_phase: Phase 5
+    notes: Quantity depends on final arm design
+
+rejected:
+  - item: Gamma 5005 4WD kit
+    reason: Arduino-only, no WiFi/camera/Python path
+
+  - item: Arduino Nano R4
+    reason: Too new, fiddly footprint, no L298N tutorial base
+
+  - item: Raspberry Pi Zero 2W
+    reason: Pi 3B already owned and is strictly better (more RAM, pre-soldered GPIO, standard CSI ribbon)
+
+  - item: L293D motor driver
+    reason: Only 600mA/channel — insufficient for 4 TT motors under load
+
+  - item: Generic AliExpress single-deck 4WD chassis
+    reason: No encoders, too cramped for Pi 3B + Arduino + L298N + battery
+
+  - item: UBEC 5V/3A buck converter
+    reason: Output can drift to 5.35V — exceeds Pi 3B's 5.25V max input
+
+  - item: 9V / AA battery holders (various, Advanced M)
+    reason: Wrong voltage/format for 18650 cells
+
+  - item: Illuminated rocker toggle switch
+    reason: Redundant — battery holder already has a built-in switch
