@@ -54,8 +54,8 @@ owned:
     qty: 2
     spare: 1
     source: Temu
-    status: received
-    notes: Fully enclosed, built-in ON/OFF switch, bare wire + DC barrel jack leads
+    status: in_use
+    notes: Powering L298N motor driver (12V terminal). Built-in ON/OFF switch, bare wire + DC barrel jack leads
 
   - item: Velcro cable straps, mixed colors
     qty: 50
