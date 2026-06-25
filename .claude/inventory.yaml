@@ -111,6 +111,15 @@ owned:
     status: received
     notes: CE/FCC/RoHS certified, USB-C input
 
+to_buy:
+  - item: 9V rectangular battery (6F22 / PP3)
+    qty: 1
+    notes: Powers the ANENG DM850 multimeter. Required to verify buck converter output before connecting the Pi.
+
+  - item: Resistor assortment pack
+    qty: 1
+    notes: Need 47 ohm for external LED (fast-flash LEDs, 3.0-3.2V Vf). An assorted pack covers Phase 4 sensor wiring too. Available at Advanced M.
+
 in_transit:
 
 deferred:

@@ -1,5 +1,5 @@
 // First hardware test: drive all 4 motors via Serial Monitor.
-// Commands: F = forward, B = backward, S = stop
+// Commands: F = forward, B = backward, S = stop, L = LED on, X = LED off
 // Send from Arduino IDE Serial Monitor at 115200 baud.
 // Remove Serial.println() calls before writing the real Phase 2 sketch.
 //
@@ -10,6 +10,10 @@
 //   Pin 6  -> ENB   (right motors speed, PWM)
 //   Pin 8  -> IN3   (right motors direction)
 //   Pin 9  -> IN4   (right motors direction)
+//
+// LED: uses onboard LED (pin 13 / LED_BUILTIN). No external wiring needed.
+// To use an external LED later: wire long leg (+) via 47 ohm resistor to pin 2,
+// short leg (-) to GND. Change LED_PIN to 2.
 
 const int LEFT_EN  = 5;
 const int LEFT_IN1 = 4;
@@ -18,11 +22,15 @@ const int RIGHT_EN = 6;
 const int RIGHT_IN3 = 8;
 const int RIGHT_IN4 = 9;
 
+const int LED_PIN  = LED_BUILTIN;
+
 const int TEST_SPEED = 150;
 
 void stopMotors();
 void forward();
 void backward();
+void ledOn();
+void ledOff();
 
 void setup() {
   Serial.begin(115200);
@@ -33,9 +41,11 @@ void setup() {
   pinMode(RIGHT_EN,  OUTPUT);
   pinMode(RIGHT_IN3, OUTPUT);
   pinMode(RIGHT_IN4, OUTPUT);
+  pinMode(LED_PIN,   OUTPUT);
 
   stopMotors();
-  Serial.println("Ready. F=forward  B=backward  S=stop");
+  digitalWrite(LED_PIN, LOW);
+  Serial.println("Ready. F=forward  B=backward  S=stop  L=LED on  X=LED off");
 }
 
 void loop() {
@@ -45,6 +55,8 @@ void loop() {
     if      (cmd == 'F' || cmd == 'f') forward();
     else if (cmd == 'B' || cmd == 'b') backward();
     else if (cmd == 'S' || cmd == 's') stopMotors();
+    else if (cmd == 'L' || cmd == 'l') ledOn();
+    else if (cmd == 'X' || cmd == 'x') ledOff();
   }
 }
 
@@ -76,4 +88,14 @@ void stopMotors() {
   analogWrite(LEFT_EN,  0);
   analogWrite(RIGHT_EN, 0);
   Serial.println("Stopped");
+}
+
+void ledOn() {
+  digitalWrite(LED_PIN, HIGH);
+  Serial.println("LED on");
+}
+
+void ledOff() {
+  digitalWrite(LED_PIN, LOW);
+  Serial.println("LED off");
 }
