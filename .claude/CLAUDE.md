@@ -168,12 +168,14 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 * `~/rover/{control,camera,logs}` directory structure created. Python venv set up.
 * Bluetooth confirmed working: `hci0 UP RUNNING`, soft-block resolved via `rfkill unblock bluetooth` (state persists across reboots via systemd-rfkill).
 
-**Phase 2 status:** Blocked on hardware. Pre-work complete.
+**Phase 2 status:** In progress.
 
-* `arduino/motor_first_test/motor_first_test.ino` written and ready to upload when Arduino arrives.
-* Buck converter setup guide written (`docs/power/buck-converter-setup.md`), including potentiometer locking step.
-* Testing order defined: L298N + motors manually first, then Arduino via Serial Monitor, then Pi serial script, then app.
-* Blocked: Arduino Uno R4 Minima, Waveshare chassis kit, and buck converter all in transit from Pi Hut UK.
+* All hardware received. No longer blocked.
+* Waveshare NS chassis mechanically assembled: frame, wheels, and all 4 motors fitted. Arduino, Pi, L298N, breadboard, battery holder, and buck converter not yet mounted.
+* Arduino IDE 2.x set up on macOS (Apple Silicon): Rosetta 2 installed to fix `arm-none-eabi-gcc bad CPU type` error. Board package: Arduino UNO R4 Boards v1.6.0, board: Arduino UNO R4 Minima, port: `/dev/cu.usbmodem1101`.
+* `arduino/motor_first_test/motor_first_test.ino` uploaded and serial-tested: responds correctly to `F`, `B`, `S` commands via Serial Monitor at 115200 baud.
+* Buck converter setup in progress: calibration pending (requires 9V battery for multimeter — not yet on hand).
+* Next steps: complete buck converter calibration, then begin wiring (L298N + motors first, then Arduino serial link to Pi).
 
 **Phase 3 pre-work (Flutter app):** UI complete and ahead of schedule. `remote-controller/` Flutter app has joystick, Accelerate/Brake/Reverse buttons, and MJPEG camera feed screen built. Needs wiring to live WebSocket and camera stream once Phase 2 and 3 backend are ready.
 

@@ -63,6 +63,42 @@ owned:
     status: received
     notes: Reusable cable management
 
+  - item: Arduino Uno R4 Minima
+    qty: 1
+    source: Pi Hut (UK)
+    status: received
+    notes: Via Shop & Ship (US forwarding address)
+
+  - item: Waveshare Robot Chassis Kit NS
+    qty: 1
+    source: Pi Hut (UK)
+    status: received
+    notes: Double-deck, 4x TT motors (6-9V, 190RPM@6V, 160mA) bundled, no encoders
+
+  - item: Photo Interrupter Sensor
+    qty: 4
+    source: Pi Hut (UK)
+    status: received
+    notes: Waveshare, includes 20-slot encoder disk each - one per motor
+
+  - item: Raspberry Pi Camera Module v2 (8MP)
+    qty: 1
+    source: Pi Hut (UK)
+    status: received
+    notes: Standard CSI ribbon, fits Pi 3B directly
+
+  - item: 20W Adjustable DC-DC Buck Converter w/ digital display
+    qty: 1
+    source: Pi Hut (UK)
+    status: received
+    notes: Must be manually set to exactly 5V, verified with multimeter, before connecting to Pi
+
+  - item: Half-size breadboard (spare)
+    qty: 1
+    source: Pi Hut (UK)
+    status: received
+    notes: Backup - local one already in use
+
   - item: ANENG DM850 digital multimeter
     qty: 1
     source: Temu
@@ -76,35 +112,6 @@ owned:
     notes: CE/FCC/RoHS certified, USB-C input
 
 in_transit:
-  - item: Arduino Uno R4 Minima
-    qty: 1
-    source: Pi Hut (UK)
-    notes: Via Shop & Ship (US forwarding address) — US import duty paid, Mauritius duty still pending on arrival
-
-  - item: Waveshare Robot Chassis Kit NS
-    qty: 1
-    source: Pi Hut (UK)
-    notes: Double-deck, 4× TT motors (6–9V, 190RPM@6V, 160mA) bundled, no encoders
-
-  - item: Photo Interrupter Sensor
-    qty: 4
-    source: Pi Hut (UK)
-    notes: Waveshare, includes 20-slot encoder disk each — one per motor
-
-  - item: Raspberry Pi Camera Module v2 (8MP)
-    qty: 1
-    source: Pi Hut (UK)
-    notes: Standard CSI ribbon, fits Pi 3B directly
-
-  - item: 20W Adjustable DC-DC Buck Converter w/ digital display
-    qty: 1
-    source: Pi Hut (UK)
-    notes: Must be manually set to exactly 5V, verified with multimeter, before connecting to Pi
-
-  - item: Half-size breadboard (spare)
-    qty: 1
-    source: Pi Hut (UK)
-    notes: Backup — local one already in use
 
 deferred:
   - item: SG90 servo motor
@@ -122,15 +129,23 @@ deferred:
     planned_phase: "Phase 5 (conditional)"
     notes: Only if servo count exceeds Arduino's available PWM pins
 
-  - item: Ultrasonic sensor (e.g. HC-SR04)
-    qty: "1+"
-    planned_phase: Phase 5
-    notes: Obstacle sensing
-
   - item: MG996R or similar servo (arms/hands)
     qty: TBD
     planned_phase: Phase 5
     notes: Quantity depends on final arm design
+
+extras:
+  - item: HC-SR04 ultrasonic sensor
+    qty: 1
+    source: local
+    status: received
+    notes: Non-mandatory. Originally deferred to Phase 5 for obstacle sensing; bought opportunistically. Will be useful when Phase 5 starts.
+
+  - item: RGB LED lights (bag)
+    qty: 1
+    source: local
+    status: received
+    notes: Non-mandatory. No assigned phase. Could be used for status indicators or decorative lighting.
 
 rejected:
   - item: Gamma 5005 4WD kit
