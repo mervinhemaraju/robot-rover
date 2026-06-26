@@ -50,6 +50,36 @@ owned:
     status: received
     notes: Confirmed correct module from product photo
 
+  - item: 9V battery (6F22 / PP3)
+    qty: 1
+    source: local
+    status: received
+    notes: Powers ANENG DM850 multimeter for buck converter verification
+
+  - item: Resistors
+    qty: 5
+    source: local
+    status: received
+    notes: Values not yet confirmed. Need 47 ohm for external LED and 10k ohm for photo interrupter pull-ups in Phase 4.
+
+  - item: RGB LED, 4-pin common anode
+    qty: 2
+    source: local
+    status: received
+    notes: True RGB LED with 4 pins (R, G, B, common anode). Can mix colors. Needs 3 GPIO pins and 3 resistors per LED. Upgrade over the 2-pin fast-flash LEDs.
+
+  - item: Micro USB cable (short)
+    qty: 2
+    source: local
+    status: received
+    notes: For connecting Pi 3B micro USB power port to buck converter output. One will be stripped at the USB-A end and screwed into the OUT terminals. One spare.
+
+  - item: Extra chassis
+    qty: 1
+    source: local
+    status: received
+    notes: Spare chassis. Type to be confirmed.
+
   - item: 18650 battery holder, 2-slot, series 7.4V
     qty: 2
     spare: 1
@@ -112,13 +142,6 @@ owned:
     notes: CE/FCC/RoHS certified, USB-C input
 
 to_buy:
-  - item: 9V rectangular battery (6F22 / PP3)
-    qty: 1
-    notes: Powers the ANENG DM850 multimeter. Required to verify buck converter output before connecting the Pi.
-
-  - item: Resistor assortment pack
-    qty: 1
-    notes: Need 47 ohm for external LED (fast-flash LEDs, 3.0-3.2V Vf). An assorted pack covers Phase 4 sensor wiring too. Available at Advanced M.
 
 in_transit:
 
