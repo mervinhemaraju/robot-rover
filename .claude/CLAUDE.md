@@ -119,6 +119,7 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 | Path | What it is |
 | --- | --- |
 | `arduino/` | Arduino sketches — `motor_first_test/` for Phase 2 hardware validation, real motor sketch to follow |
+| `pi/` | Python services for the Raspberry Pi — source-controlled here, deployed to `~/rover/` on the Pi |
 | `remote-controller/` | Flutter mobile app (Phase 3+) — WebSocket control, MJPEG live feed, joystick + buttons UI, telemetry overlays |
 | `docs/` | Per-phase and per-topic setup guides, written after each session with `/log-progress` |
 | `~/rover/control/` | Python WebSocket server on the Pi (Phase 3+) |
