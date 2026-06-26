@@ -70,8 +70,10 @@ Turn the potentiometer screw gradually, pausing after each small turn to let the
 The display is a guide, not ground truth. Confirm with the multimeter:
 
 1. Set the multimeter to **DC Voltage (V⎓)**, range 20V or auto
-2. Touch the **red probe to OUT+** and the **black probe to OUT−**
-3. Read the value
+2. Plug the **black probe into the COM port** on the multimeter body
+3. Plug the **red probe into the VΩ port** on the multimeter body (the one marked with V and Ω — not the A/10A port, which is for current only)
+4. Touch the **red probe tip to OUT+** and the **black probe tip to OUT−**
+5. Read the value
 
 **Target range: 4.95V – 5.05V**
 
@@ -103,6 +105,8 @@ Turn the battery pack switch off. Only now is it safe to wire the Pi:
 Turn the battery switch back on. The Pi should boot normally: solid red PWR LED, green ACT LED blinking during boot.
 
 If the Pi shows a **rainbow square** in the top-right corner of the display (or if you were using a display), that is an undervoltage warning: the converter output is too low. Adjust up slightly and recheck.
+
+**Note on voltage under load:** Once the Pi is drawing current (500–700mA during boot), the multimeter will read slightly lower than your no-load calibration reading — a drop of 0.01–0.05V is normal and is not potentiometer drift. What matters is that the under-load reading stays within 4.95–5.05V. If your no-load reading was 5.01V and it reads 4.98V with the Pi running, that is correct behaviour.
 
 ---
 

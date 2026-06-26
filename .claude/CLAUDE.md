@@ -176,8 +176,9 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 * `arduino/motor_first_test/motor_first_test.ino` uploaded and serial-tested: responds correctly to `F`, `B`, `S`, `L`, `X` commands via Serial Monitor at 115200 baud.
 * L298N wired to all 4 motors and Arduino. Motors confirmed spinning forward and backward via Serial Monitor commands. See `docs/wiring/l298n-motors-arduino.md`.
 * Lesson: 5V from Arduino USB is not enough to power L298N (internal regulator needs >7V input). Must use 7.4V battery pack for motor power.
-* Buck converter setup pending: requires 9V battery for multimeter verification before Pi can be connected.
-* Next steps: (1) buy 9V battery + resistor pack, (2) calibrate buck converter, (3) connect Pi, (4) write Pi serial script to replace Serial Monitor control.
+* Buck converter calibrated and sealed: potentiometer adjusted to 5.0V, verified with multimeter (5.01V no-load, 4.98V under Pi load — both within the 4.95–5.05V spec). Sealed with clear nail polish.
+* Pi confirmed booting from battery power via buck converter. Solid red PWR LED, green ACT LED blinking on boot.
+* Next step: write Pi serial script to replace Serial Monitor control.
 
 **Phase 3 pre-work (Flutter app):** UI complete and ahead of schedule. `remote-controller/` Flutter app has joystick, Accelerate/Brake/Reverse buttons, and MJPEG camera feed screen built. Needs wiring to live WebSocket and camera stream once Phase 2 and 3 backend are ready.
 
