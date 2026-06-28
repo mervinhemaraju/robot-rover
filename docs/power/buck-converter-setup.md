@@ -116,6 +116,19 @@ If you ever re-adjust the potentiometer (e.g. after transport, after a knock), a
 
 ---
 
+## Undervoltage when adding more USB devices
+
+The Pi alone may read 5.09V under load, but adding the Arduino via the Pi's USB-A port increases current demand and can trigger further voltage sag. If undervoltage warnings appear after connecting the Arduino:
+
+1. Measure the output at the buck converter terminals with the Pi and Arduino both running
+2. If it reads below 5.00V, nudge the potentiometer slightly clockwise
+3. Re-verify no-load reads no higher than 5.15V (keep headroom below the Pi's 5.25V max)
+4. Two brief warnings at boot are acceptable - startup surge is normal. Persistent warnings during normal operation are not.
+
+**Battery depletion note:** 18650 cells deplete faster under motor load than expected. Cells that read 7.53V at session start can drop below the converter's regulation threshold after repeated motor runs. Check battery voltage before each session. Below 7.0V combined: charge before testing. Never run motors with the converter output below 4.8V - stop immediately and charge.
+
+---
+
 ## Quick reference
 
 | Check | Value |

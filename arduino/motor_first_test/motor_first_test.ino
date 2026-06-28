@@ -1,5 +1,5 @@
 // First hardware test: drive all 4 motors via Serial Monitor.
-// Commands: F = forward, B = backward, S = stop, L = LED on, X = LED off
+// Commands: F = forward, B = backward, S = stop, L = turn left, R = turn right, E = toggle LED
 // Send from Arduino IDE Serial Monitor at 115200 baud.
 // Remove Serial.println() calls before writing the real Phase 2 sketch.
 //
@@ -26,11 +26,14 @@ const int LED_PIN  = LED_BUILTIN;
 
 const int TEST_SPEED = 150;
 
+bool ledState = false;
+
 void stopMotors();
 void forward();
 void backward();
-void ledOn();
-void ledOff();
+void turnLeft();
+void turnRight();
+void toggleLed();
 
 void setup() {
   Serial.begin(115200);
@@ -45,7 +48,7 @@ void setup() {
 
   stopMotors();
   digitalWrite(LED_PIN, LOW);
-  Serial.println("Ready. F=forward  B=backward  S=stop  L=LED on  X=LED off");
+  Serial.println("Ready. F=forward  B=backward  S=stop  L=left  R=right  E=toggle LED");
 }
 
 void loop() {
@@ -55,8 +58,9 @@ void loop() {
     if      (cmd == 'F' || cmd == 'f') forward();
     else if (cmd == 'B' || cmd == 'b') backward();
     else if (cmd == 'S' || cmd == 's') stopMotors();
-    else if (cmd == 'L' || cmd == 'l') ledOn();
-    else if (cmd == 'X' || cmd == 'x') ledOff();
+    else if (cmd == 'L' || cmd == 'l') turnLeft();
+    else if (cmd == 'R' || cmd == 'r') turnRight();
+    else if (cmd == 'E' || cmd == 'e') toggleLed();
   }
 }
 
@@ -90,12 +94,28 @@ void stopMotors() {
   Serial.println("Stopped");
 }
 
-void ledOn() {
-  digitalWrite(LED_PIN, HIGH);
-  Serial.println("LED on");
+void turnLeft() {
+  digitalWrite(LEFT_IN1,  LOW);
+  digitalWrite(LEFT_IN2,  HIGH);
+  digitalWrite(RIGHT_IN3, HIGH);
+  digitalWrite(RIGHT_IN4, LOW);
+  analogWrite(LEFT_EN,  TEST_SPEED);
+  analogWrite(RIGHT_EN, TEST_SPEED);
+  Serial.println("Turn left");
 }
 
-void ledOff() {
-  digitalWrite(LED_PIN, LOW);
-  Serial.println("LED off");
+void turnRight() {
+  digitalWrite(LEFT_IN1,  HIGH);
+  digitalWrite(LEFT_IN2,  LOW);
+  digitalWrite(RIGHT_IN3, LOW);
+  digitalWrite(RIGHT_IN4, HIGH);
+  analogWrite(LEFT_EN,  TEST_SPEED);
+  analogWrite(RIGHT_EN, TEST_SPEED);
+  Serial.println("Turn right");
+}
+
+void toggleLed() {
+  ledState = !ledState;
+  digitalWrite(LED_PIN, ledState ? HIGH : LOW);
+  Serial.println(ledState ? "LED on" : "LED off");
 }

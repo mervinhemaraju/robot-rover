@@ -178,9 +178,14 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 * `arduino/motor_first_test/motor_first_test.ino` uploaded and serial-tested: responds correctly to `F`, `B`, `S`, `L`, `X` commands via Serial Monitor at 115200 baud.
 * L298N wired to all 4 motors and Arduino. Motors confirmed spinning forward and backward via Serial Monitor commands. See `docs/wiring/l298n-motors-arduino.md`.
 * Lesson: 5V from Arduino USB is not enough to power L298N (internal regulator needs >7V input). Must use 7.4V battery pack for motor power.
-* Buck converter calibrated and sealed: potentiometer adjusted to 5.0V, verified with multimeter (5.01V no-load, 4.98V under Pi load — both within the 4.95–5.05V spec). Sealed with clear nail polish.
+* Buck converter recalibrated: potentiometer adjusted to 5.13V no-load (up from 5.01V) to hold 5.09V under Pi + Arduino load without undervoltage warnings. Two brief warnings at boot are normal (startup surge).
 * Pi confirmed booting from battery power via buck converter. Solid red PWR LED, green ACT LED blinking on boot.
-* Next step: write Pi serial script to replace Serial Monitor control.
+* Arduino detected on Pi as `/dev/ttyACM0` via data USB-C cable (charge-only cables do not work - label the correct cable).
+* `pi/serial-repl/main.py` written and deployed to `~/rover/`. F and B commands confirmed working with all 4 motors via Pi serial script.
+* `motor_first_test.ino` updated: added `turnLeft()` (L), `turnRight()` (R), `toggleLed()` (E); removed separate ledOn/ledOff commands.
+* Open issue: serial connection drops during/after L (turn left) command with `[Errno 5] Input/output error`. Suspected voltage sag under turn load. Needs diagnosis next session.
+* Battery depleted mid-session (buck converter output dropped to 3.4V). Cells on charge. Check battery voltage before each session — below 7.0V, charge first.
+* Next step: diagnose serial drop during turn commands; then mount all components on chassis.
 
 **Phase 3 pre-work (Flutter app):** UI complete and ahead of schedule. `remote-controller/` Flutter app has joystick, Accelerate/Brake/Reverse buttons, and MJPEG camera feed screen built. Needs wiring to live WebSocket and camera stream once Phase 2 and 3 backend are ready.
 
