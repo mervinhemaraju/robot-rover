@@ -173,7 +173,7 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 **Phase 2 status:** ✅ Complete.
 
 * All hardware received. No longer blocked.
-* Waveshare NS chassis mechanically assembled: frame, wheels, and all 4 motors fitted. Arduino, Pi, L298N, breadboard, battery holder, and buck converter not yet mounted.
+* Waveshare NS chassis mechanically assembled: frame, wheels, and all 4 motors fitted. Boards mounted on standoffs to keep their underside through-hole pins clear of the metal decks. Ground deck: buck converter, L298N, Pi. Battery holder mounted securely below the ground deck (heaviest item kept low and centered for stability). Top deck (Arduino + breadboard) now mounted. Full assembly complete: ground deck wiring finalized and rover drive-tested (F/B/L/R) on the fully mounted chassis with no issues.
 * Arduino IDE 2.x set up on macOS (Apple Silicon): Rosetta 2 installed to fix `arm-none-eabi-gcc bad CPU type` error. Board package: Arduino UNO R4 Boards v1.6.0, board: Arduino UNO R4 Minima, port: `/dev/cu.usbmodem1101`.
 * `arduino/motor_first_test/motor_first_test.ino` uploaded and serial-tested: responds correctly to `F`, `B`, `S`, `L`, `X` commands via Serial Monitor at 115200 baud.
 * L298N wired to all 4 motors and Arduino. Motors confirmed spinning forward and backward via Serial Monitor commands. See `docs/wiring/l298n-motors-arduino.md`.
@@ -185,7 +185,7 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 * `motor_first_test.ino` updated: added `turnLeft()` (L), `turnRight()` (R), `toggleLed()` (E); removed separate ledOn/ledOff commands.
 * Serial drop during turn commands resolved: root cause was depleted battery causing voltage sag. Full F/B/L/R sequence confirmed working after charging cells to full on VariCore VC-Q4 at 1A.
 * Phase 2 deliverable met: rover drives forward, backward, and turns via Python script on the Pi.
-* Next step: mount all components (Pi, Arduino, L298N, breadboard, battery holder, buck converter) onto the chassis, then begin Phase 3.
+* Rover is now fully assembled and mounted (both decks), wiring finalized, and confirmed driving F/B/L/R on the chassis. Next: begin Phase 3 (Pi Camera v2 MJPEG stream + Flutter WebSocket control + Bluetooth fallback).
 
 **Phase 3 pre-work (Flutter app):** UI complete and ahead of schedule. `remote-controller/` Flutter app has joystick, Accelerate/Brake/Reverse buttons, and MJPEG camera feed screen built. Needs wiring to live WebSocket and camera stream once Phase 2 and 3 backend are ready.
 

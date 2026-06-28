@@ -2,7 +2,8 @@
 
 ## Status
 
-Mechanical assembly complete. Electronics not yet mounted.
+Mechanical assembly complete. Electronics now mounted on standoffs and wired -
+see `component-mounting.md` for the final layout and ground deck wiring.
 
 ---
 
