@@ -13,6 +13,7 @@
 @.claude/skills/serial-debug/SKILL.md
 @.claude/skills/new-arduino-sketch/SKILL.md
 @.claude/skills/new-pi-service/SKILL.md
+@.claude/skills/whats-next/SKILL.md
 
 ## Who is building this
 
