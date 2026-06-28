@@ -170,7 +170,7 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 * `~/rover/{control,camera,logs}` directory structure created. Python venv set up.
 * Bluetooth confirmed working: `hci0 UP RUNNING`, soft-block resolved via `rfkill unblock bluetooth` (state persists across reboots via systemd-rfkill).
 
-**Phase 2 status:** In progress.
+**Phase 2 status:** ✅ Complete.
 
 * All hardware received. No longer blocked.
 * Waveshare NS chassis mechanically assembled: frame, wheels, and all 4 motors fitted. Arduino, Pi, L298N, breadboard, battery holder, and buck converter not yet mounted.
@@ -183,9 +183,9 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 * Arduino detected on Pi as `/dev/ttyACM0` via data USB-C cable (charge-only cables do not work - label the correct cable).
 * `pi/serial-repl/main.py` written and deployed to `~/rover/`. F and B commands confirmed working with all 4 motors via Pi serial script.
 * `motor_first_test.ino` updated: added `turnLeft()` (L), `turnRight()` (R), `toggleLed()` (E); removed separate ledOn/ledOff commands.
-* Open issue: serial connection drops during/after L (turn left) command with `[Errno 5] Input/output error`. Suspected voltage sag under turn load. Needs diagnosis next session.
-* Battery depleted mid-session (buck converter output dropped to 3.4V). Cells on charge. Check battery voltage before each session — below 7.0V, charge first.
-* Next step: diagnose serial drop during turn commands; then mount all components on chassis.
+* Serial drop during turn commands resolved: root cause was depleted battery causing voltage sag. Full F/B/L/R sequence confirmed working after charging cells to full on VariCore VC-Q4 at 1A.
+* Phase 2 deliverable met: rover drives forward, backward, and turns via Python script on the Pi.
+* Next step: mount all components (Pi, Arduino, L298N, breadboard, battery holder, buck converter) onto the chassis, then begin Phase 3.
 
 **Phase 3 pre-work (Flutter app):** UI complete and ahead of schedule. `remote-controller/` Flutter app has joystick, Accelerate/Brake/Reverse buttons, and MJPEG camera feed screen built. Needs wiring to live WebSocket and camera stream once Phase 2 and 3 backend are ready.
 

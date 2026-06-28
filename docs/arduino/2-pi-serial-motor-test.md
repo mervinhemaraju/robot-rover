@@ -56,5 +56,5 @@ cd ~/rover && source venv/bin/activate && python main.py
 |---|---|---|
 | Charge-only USB-C cable | Resolved | Use only the cable confirmed to carry data (same one used for Mac uploads). Label it. |
 | Buck converter undervoltage under load | Resolved | Potentiometer adjusted to 5.13V no-load; reads 5.09V with Pi + Arduino. Two brief warnings at boot are normal (startup surge). |
-| Serial connection drops during/after L (turn left) command | Open | `serial.SerialException: write failed: [Errno 5] Input/output error` after sending L. F and B work fine. Suspected cause: increased current draw during turn causes voltage dip that resets Arduino. Needs diagnosis next session. |
+| Serial connection drops during/after L (turn left) command | Resolved | Root cause: depleted battery. Voltage sag under turn load caused Arduino to reset. After fully charging cells on VariCore VC-Q4 at 1A, full F/B/L/R sequence ran without error. |
 | Battery depleted mid-session | Resolved (charge needed) | Buck converter output dropped to 3.4V after repeated motor runs. Cells need full charge before next session. Always check battery voltage before testing - below 7.0V combined, charge first. |
