@@ -189,4 +189,11 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 
 **Phase 3 pre-work (Flutter app):** UI complete and ahead of schedule. `remote-controller/` Flutter app has joystick, Accelerate/Brake/Reverse buttons, and MJPEG camera feed screen built. Needs wiring to live WebSocket and camera stream once Phase 2 and 3 backend are ready.
 
+**Phase 3 status:** In progress. Agreed build order (camera deferred to last):
+
+1. **Diagnostic loop script + real Arduino motor sketch.** A looped Pi-side script to confirm every direction is correct (wiring may have left/right or motor-direction swaps from assembly). Any swap is fixed in the Arduino sketch (or rewiring), never patched in the Pi script, so the correction carries forward. This stage also finalises the real motor sketch: directions correct, `spd` (0-255 PWM) and `steer` (-1.0..1.0) params, and the forward<->reverse safety interlock (must pass through full stop) implemented in the Arduino as the last line of defence. This is the verified hardware baseline.
+2. **WebSocket control server (port 8765).** Thin JSON-to-serial translator over the now-proven serial protocol from step 1.
+3. **Wire the Flutter app to the Pi** at `192.168.0.4` (control 8765, video 8080).
+4. **Remaining Phase 3 components:** Pi Camera v2 MJPEG stream (port 8080), battery %/voltage telemetry (voltage divider into Arduino analog pin), Bluetooth serial fallback. Speed-in-km/h telemetry depends on encoders (Phase 4); treat as deferred/placeholder for now.
+
 **Parts tracking:** See `.claude/inventory.yaml` — read this before suggesting any wiring or purchasing step.

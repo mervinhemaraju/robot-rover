@@ -1,9 +1,15 @@
-"""Serial wrapper around the Arduino motor controller (rover_motors protocol).
+"""Synchronous serial wrapper for the Arduino motor controller.
 
-Protocol (newline-terminated): ``D <left> <right>``, ``S``, ``B``, ``?``.
-This is a thin, injectable wrapper so the REPL (and later the WebSocket server)
-can share one tested serial path.
+Speaks the rover_motors protocol ("D <left> <right>", "S", "B", "?"). Kept small
+and synchronous on purpose: the async MotorController owns one instance and runs
+its blocking calls in a thread executor, so the event loop is never blocked and
+the single port has exactly one owner.
+
+This is a self-contained copy of the wrapper in pi/serial-repl so the control
+service deploys independently to ~/rover/control/ with no cross-folder imports.
 """
+
+from __future__ import annotations
 
 import time
 
@@ -20,6 +26,7 @@ class MotorSerial:
         self._baud = baud
         self._timeout = timeout
         self._ser: serial.Serial | None = None
+        self._rx_buffer = ""
 
     def open(self) -> None:
         """Open the port and wait for the Arduino to boot.
@@ -32,14 +39,11 @@ class MotorSerial:
                 self._port, baudrate=self._baud, timeout=self._timeout
             )
         except serial.SerialException as exc:
-            raise SerialConnectionError(
-                f"could not open {self._port}: {exc}"
-            ) from exc
-        # The Arduino may reset when the port opens; let it boot and emit its banner.
+            raise SerialConnectionError(f"could not open {self._port}: {exc}") from exc
+        # The Arduino may reset when the port opens; let it boot before we drive.
         time.sleep(2.0)
 
     def close(self) -> None:
-        """Close the port if it is open."""
         if self._ser is not None and self._ser.is_open:
             self._ser.close()
 
@@ -48,7 +52,7 @@ class MotorSerial:
         return self._ser is not None and self._ser.is_open
 
     def send(self, command: str) -> None:
-        """Write a single command, appending the newline the parser expects.
+        """Write a command, appending the newline the Arduino parser expects.
 
         Raises:
             SerialWriteError: the port is closed or the write failed.
@@ -60,25 +64,30 @@ class MotorSerial:
         except serial.SerialException as exc:
             raise SerialWriteError(f"failed to write {command!r}: {exc}") from exc
 
-    def read_lines(self, window: float = 0.3) -> list[str]:
-        """Collect response lines until the link is quiet for ``window`` seconds.
+    def read_available(self) -> list[str]:
+        """Return any complete lines currently buffered, without blocking.
 
-        Returns an empty list if the port is closed.
+        Partial lines are retained across calls. Returns an empty list if the
+        port is closed or nothing is waiting.
 
         Raises:
             SerialReadError: a read failed on an open port.
         """
         if self._ser is None or not self._ser.is_open:
             return []
+        try:
+            waiting = self._ser.in_waiting
+            if waiting:
+                self._rx_buffer += self._ser.read(waiting).decode(
+                    "ascii", errors="replace"
+                )
+        except serial.SerialException as exc:
+            raise SerialReadError(f"failed to read: {exc}") from exc
+
         lines: list[str] = []
-        deadline = time.monotonic() + window
-        while time.monotonic() < deadline:
-            try:
-                raw = self._ser.readline()
-            except serial.SerialException as exc:
-                raise SerialReadError(f"failed to read: {exc}") from exc
-            text = raw.decode("ascii", errors="replace").strip()
-            if text:
-                lines.append(text)
-                deadline = time.monotonic() + window  # extend while data flows
+        while "\n" in self._rx_buffer:
+            line, self._rx_buffer = self._rx_buffer.split("\n", 1)
+            line = line.strip()
+            if line:
+                lines.append(line)
         return lines
