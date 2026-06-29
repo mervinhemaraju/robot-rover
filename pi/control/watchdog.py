@@ -26,7 +26,7 @@ class Watchdog:
         self._on_timeout = on_timeout
         self._kicked = asyncio.Event()
         self._task: asyncio.Task[None] | None = None
-        self._tripped = False
+        self._seen_activity = False
 
     def start(self) -> None:
         self._task = asyncio.create_task(self._run(), name="watchdog")
@@ -48,10 +48,12 @@ class Watchdog:
             try:
                 await asyncio.wait_for(self._kicked.wait(), timeout=self._timeout_s)
                 self._kicked.clear()
-                self._tripped = False
+                self._seen_activity = True
             except asyncio.TimeoutError:
-                # Fire once per quiet period so we do not spam stop commands.
-                if not self._tripped:
-                    self._tripped = True
+                # Only trip if commands actually arrived since the last trip, so
+                # an idle server (no client connected) does not raise a false
+                # failsafe. Fires once per quiet period, then re-arms on activity.
+                if self._seen_activity:
+                    self._seen_activity = False
                     log.warning("watchdog_timeout", timeout_s=self._timeout_s)
                     await self._on_timeout()

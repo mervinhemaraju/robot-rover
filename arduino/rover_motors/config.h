@@ -30,4 +30,12 @@ const int PWM_MIN = 0;
 // timed with millis() in commands.cpp.
 const unsigned long BRAKE_MS = 200;
 
+// Failsafe: if the rover is driving and no command arrives for this long, stop.
+// This is independent of the Pi, so a dead Pi server cannot leave the rover
+// running. Keep it longer than the app's command stream (~100 ms) and the Pi
+// watchdog (~300 ms); the Arduino is the last-resort backstop.
+// NOTE: a single manual command (Serial Monitor / Pi REPL) now auto-stops after
+// this interval. Resend to keep driving.
+const unsigned long COMMAND_TIMEOUT_MS = 500;
+
 #endif

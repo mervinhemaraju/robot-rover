@@ -14,6 +14,7 @@ enum MotionState { STATE_STOPPED, STATE_DRIVING, STATE_BRAKING };
 static Direction currentDir = DIR_STOPPED;
 static MotionState state = STATE_STOPPED;
 static unsigned long brakeStart = 0;
+static unsigned long lastCommandMs = 0;
 
 static const int LINE_BUF = 32;
 static char buf[LINE_BUF];
@@ -101,6 +102,7 @@ static void parseLine(char* line) {
 void commandsBegin() {
   pinMode(LED_PIN, OUTPUT);
   setLed(false);
+  lastCommandMs = millis();
 }
 
 void commandsUpdate() {
@@ -109,12 +111,21 @@ void commandsUpdate() {
     doStop();
   }
 
+  // Failsafe: if we are driving and no command has arrived for COMMAND_TIMEOUT_MS,
+  // stop. Last line of defence: it halts the rover even if the Pi server dies
+  // mid-drive and never sends a stop.
+  if (state == STATE_DRIVING && millis() - lastCommandMs >= COMMAND_TIMEOUT_MS) {
+    doStop();
+    Serial.println("FAILSAFE stop: no command");
+  }
+
   // Accumulate serial bytes into a line buffer; parse on newline.
   while (Serial.available() > 0) {
     char c = (char)Serial.read();
     if (c == '\n' || c == '\r') {
       if (len > 0) {
         buf[len] = '\0';
+        lastCommandMs = millis();  // a complete line means the source is alive
         parseLine(buf);
         len = 0;
       }

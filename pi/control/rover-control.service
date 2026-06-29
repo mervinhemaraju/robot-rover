@@ -1,0 +1,31 @@
+# systemd unit for the rover WebSocket control server.
+#
+# Install on the Pi:
+#   sudo cp rover-control.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now rover-control.service
+#
+# Adjust WorkingDirectory / ExecStart if you deploy somewhere other than
+# ~/rover/pi/control. Requirements are installed with:
+#   pip install --user --break-system-packages -r requirements.txt
+# and th3pl4gu3 must be in the dialout group for serial access.
+
+[Unit]
+Description=Rover WebSocket control server
+After=network-online.target
+Wants=network-online.target
+# Keep retrying at boot even if the Arduino is slow to enumerate.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=th3pl4gu3
+WorkingDirectory=/home/th3pl4gu3/rover/pi/control
+Environment=SERIAL_PORT=/dev/ttyACM0
+Environment=WS_PORT=8765
+ExecStart=/usr/bin/python3 main.py
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
