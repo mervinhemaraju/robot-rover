@@ -15,6 +15,10 @@ class ButtonPrimary extends StatefulWidget {
   final Color accentColor;
   final double fontSize;
 
+  /// Tightens the layout (smaller icon, less spacing) so the button fits a
+  /// short slot, e.g. the Reverse hold-button beside the Lights toggle.
+  final bool compact;
+
   const ButtonPrimary({
     super.key,
     this.onPressed,
@@ -24,6 +28,7 @@ class ButtonPrimary extends StatefulWidget {
     required this.icon,
     required this.accentColor,
     this.fontSize = 18,
+    this.compact = false,
   });
 
   @override
@@ -93,8 +98,8 @@ class _ButtonPrimaryState extends State<ButtonPrimary> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(widget.icon, size: widget.fontSize * 2.8),
-            const SizedBox(height: 8),
+            Icon(widget.icon, size: widget.fontSize * (widget.compact ? 1.4 : 2.8)),
+            SizedBox(height: widget.compact ? 4 : 8),
             Text(
               widget.label,
               style: TextStyle(

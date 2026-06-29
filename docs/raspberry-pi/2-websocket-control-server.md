@@ -12,7 +12,8 @@ app) over WebSocket and forwards them to the Arduino over serial. Lives in
   owner), `watchdog` (failsafe), `server` (WebSocket handler), `main` (wiring).
 - Message contract: `{"cmd":"F|R|B|S","spd":0-255,"steer":-1.0..1.0}` in,
   `{"ok":true}` / `{"ok":false,"error":...}` out. The mixer turns cmd/spd/steer
-  into the Arduino's `D <left> <right>` / `S` / `B`.
+  into the Arduino's `D <left> <right>` / `S` / `B`. The canonical protocol
+  spec (including the client streaming contract) lives in `pi/control/README.md`.
 - Safety: a watchdog stops the rover if the command stream goes quiet
   (accelerate is hold-to-drive, so the app must stream); motors also stop on
   client disconnect and on SIGTERM/SIGINT.

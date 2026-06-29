@@ -34,9 +34,15 @@ def test_scales_to_preserve_turn_ratio_when_clipping() -> None:
     assert to_serial(DriveCommand(cmd="F", spd=200, steer=1.0)) == "D 255 0"
 
 
-def test_reverse_steer_right() -> None:
-    # base = -100, turn = 100, left = 0, right = -200
-    assert to_serial(DriveCommand(cmd="R", spd=100, steer=1.0)) == "D 0 -200"
+def test_reverse_steer_mirrored_right() -> None:
+    # Reverse mirrors the turn: base = -100, turn = -100 (mirrored),
+    # left = -200, right = 0.
+    assert to_serial(DriveCommand(cmd="R", spd=100, steer=1.0)) == "D -200 0"
+
+
+def test_reverse_steer_mirrored_left() -> None:
+    # base = -100, turn = +100 (mirrored from -100), left = 0, right = -200.
+    assert to_serial(DriveCommand(cmd="R", spd=100, steer=-1.0)) == "D 0 -200"
 
 
 def test_steer_gain_scales_turn() -> None:

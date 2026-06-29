@@ -18,6 +18,27 @@ Incoming (app -> server), one JSON object per WebSocket message:
 
 Outgoing (server -> app): `{"ok": true}` or `{"ok": false, "error": "..."}`.
 
+## Client streaming contract
+
+The firmware is stream-to-drive: it stops if commands stop arriving. A client
+MUST therefore behave as follows:
+
+- **While a control is held**, re-send the current command continuously.
+  Recommended cadence: ~100 ms, comfortably inside `WATCHDOG_TIMEOUT_S` (0.3 s).
+  Sending a command once is not enough: the watchdog will stop the rover.
+- **On release**, send `S` (soft stop) once, then go quiet.
+- **Brake** is `B`; hold = keep sending `B`, release = send `S`.
+- Forward<->reverse: pass through `S` first. The client must enforce this; see below.
+
+`{"ok": true}` means the server parsed and forwarded the command to the Arduino.
+It does NOT mean the Arduino executed it. A forward->reverse flip without a stop
+in between is rejected by the Arduino's interlock (`ERR interlock`), but the
+server still replies `{"ok": true}` (it does not read the Arduino reply back).
+So clients must enforce the stop-before-reverse rule themselves.
+
+Reference client: the Flutter app in `remote-controller/` (`DriveSequencer` +
+`RoverController`, 100 ms heartbeat).
+
 ## Safety
 
 - The Arduino's forward<->reverse interlock remains the last line of defence.

@@ -1,22 +1,16 @@
+import 'package:car_remote_controller/providers/rover_controller.dart';
 import 'package:car_remote_controller/ui/widgets/button_primary.dart';
 import 'package:car_remote_controller/ui/widgets/button_toggle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ActionTowerWidget extends StatelessWidget {
-  /// Reports the action currently performed (null when idle), shown in
-  /// the control tower readout.
-  final ValueNotifier<String?> currentAction;
-
-  const ActionTowerWidget({super.key, required this.currentAction});
-
-  void _endAction(String action) {
-    // Only clear our own action: another control may have taken over
-    // while this one was still held.
-    if (currentAction.value == action) currentAction.value = null;
-  }
+class ActionTowerWidget extends ConsumerWidget {
+  const ActionTowerWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(roverControllerProvider.notifier);
+
     return Expanded(
       flex: 3,
       child: Column(
@@ -28,49 +22,49 @@ class ActionTowerWidget extends StatelessWidget {
               label: "Brake",
               icon: Icons.gas_meter,
               accentColor: Colors.red,
-              onPressStart: () => currentAction.value = "BRAKING",
-              onPressEnd: () => _endAction("BRAKING"),
+              onPressStart: () => controller.brake(true),
+              onPressEnd: () => controller.brake(false),
             ),
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           Expanded(
             flex: 4,
             child: ButtonPrimary(
               label: "Accelerate",
               icon: Icons.electric_bolt,
               accentColor: Colors.orange,
-              onPressStart: () => currentAction.value = "ACCELERATING",
-              onPressEnd: () => _endAction("ACCELERATING"),
+              onPressStart: () => controller.accelerate(true),
+              onPressEnd: () => controller.accelerate(false),
             ),
           ),
 
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           Expanded(
             flex: 2,
             child: Row(
               children: [
                 Expanded(
-                  child: ButtonToggle(
+                  // Hold-to-reverse: matches the firmware (stream-to-drive) and
+                  // releases to a soft stop, so it's never left latched.
+                  child: ButtonPrimary(
                     label: "Reverse",
+                    icon: Icons.fast_rewind,
                     accentColor: Colors.deepPurple,
-                    isActive: false,
-                    onToggled: (isOn) {
-                      final action = isOn ? "Reverse ON" : "Reverse OFF";
-                      print("Reverse is now $action");
-                    },
-                    activeLabel: "ON",
+                    fontSize: 12,
+                    compact: true,
+                    onPressStart: () => controller.reverse(true),
+                    onPressEnd: () => controller.reverse(false),
                   ),
                 ),
-                SizedBox(width: 6),
+                const SizedBox(width: 6),
                 Expanded(
                   child: ButtonToggle(
                     label: "Lights",
                     accentColor: const Color.fromARGB(255, 63, 220, 223),
                     isActive: false,
-                    onToggled: (isOn) {
-                      final action = isOn ? "Reverse ON" : "Reverse OFF";
-                      print("Reverse is now $action");
-                    },
+                    // TODO: no lights command in the protocol yet (F/R/B/S only);
+                    // wire to an Arduino lights command in a later step.
+                    onToggled: (isOn) {},
                     activeLabel: "ON",
                   ),
                 ),

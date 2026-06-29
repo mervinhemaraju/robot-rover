@@ -1,32 +1,10 @@
-import 'package:car_remote_controller/core/speed_simulator.dart';
 import 'package:car_remote_controller/ui/components/actiontower.dart';
 import 'package:car_remote_controller/ui/components/controltower.dart';
 import 'package:car_remote_controller/ui/components/livefeed.dart';
 import 'package:flutter/material.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends StatelessWidget {
   const MainPage({super.key});
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  /// Set by the action tower while a control is held, shown in the
-  /// control tower readout. Null when idle.
-  /// TODO: migrate to a Riverpod provider once command wiring lands.
-  final ValueNotifier<String?> _currentAction = ValueNotifier<String?>(null);
-
-  /// Drives the speedometer from the brake/accelerate buttons.
-  /// TODO: replace with real speed telemetry.
-  late final SpeedSimulator _speedSimulator = SpeedSimulator(_currentAction);
-
-  @override
-  void dispose() {
-    _speedSimulator.dispose();
-    _currentAction.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +18,15 @@ class _MainPageState extends State<MainPage> {
           bottom: 16.0,
         ),
         child: Row(
-          children: [
-            ControlTowerWidget(
-              currentAction: _currentAction,
-              speed: _speedSimulator.speed,
-            ),
-            const SizedBox(width: 16),
-            const LivefeedWidget(),
-            const SizedBox(width: 16),
-            ActionTowerWidget(currentAction: _currentAction),
+          children: const [
+            // Control tower (status, gauge, steering) and action tower
+            // (accelerate / brake / reverse) both read and drive the rover
+            // controller provider directly.
+            ControlTowerWidget(),
+            SizedBox(width: 16),
+            LivefeedWidget(),
+            SizedBox(width: 16),
+            ActionTowerWidget(),
           ],
         ),
       ),

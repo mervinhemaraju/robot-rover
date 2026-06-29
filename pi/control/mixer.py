@@ -8,9 +8,11 @@ accelerate / reverse / brake buttons):
     left  = base + turn
     right = base - turn
 
-Positive steer turns right (left wheels run faster than right). If a wheel would
-exceed the PWM range, both wheels are scaled together so the turn ratio (and thus
-the curve the rover follows) is preserved rather than clipped.
+Positive steer turns right (left wheels run faster than right). In reverse the
+turn is mirrored so the joystick curves the rover the way the driver expects
+(the same wheel differential yaws the opposite way when moving backward). If a
+wheel would exceed the PWM range, both wheels are scaled together so the turn
+ratio (and thus the curve the rover follows) is preserved rather than clipped.
 
 This module is pure: no I/O, fully unit-testable.
 """
@@ -31,6 +33,13 @@ def to_serial(command: DriveCommand, steer_gain: float = 1.0) -> str:
 
     base = command.spd if command.cmd == "F" else -command.spd
     turn = steer_gain * command.steer * command.spd
+
+    # Mirror the steering in reverse so the joystick curves the rover the same
+    # way the driver expects: like a car backing up, the same wheel differential
+    # yaws the opposite way once the rover is moving backward.
+    if command.cmd == "R":
+        turn = -turn
+
     left = base + turn
     right = base - turn
 
