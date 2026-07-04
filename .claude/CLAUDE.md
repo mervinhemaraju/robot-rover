@@ -43,7 +43,7 @@ Optional future: remote access over the internet (not just local WiFi) via Tails
 ### Brain
 
 * **Raspberry Pi 3 Model B** (already owned) — main controller, Linux, Python, built-in WiFi + Bluetooth 4.1, full-size CSI camera port, GPIO pre-soldered
-* **Arduino Uno R4 Minima** — motor co-processor, real-time PWM + encoder reading, USB-C serial link to Pi (Renesas RA4M1, 48MHz, 32KB RAM, 6–24V input range, 3.3V logic, max 8mA per GPIO pin — never connect motors directly to pins, always via L298N)
+* **Arduino Uno R4 Minima** — motor co-processor, real-time PWM + encoder reading, USB-C serial link to Pi (Renesas RA4M1, 48MHz, 32KB RAM, 6–24V input range, 5V logic, max 8mA per GPIO pin — never connect motors directly to pins, always via L298N)
 
 ### Motion
 
@@ -146,7 +146,7 @@ Tailscale (recommended first step — zero config, permanent IP, encrypted, lowe
 * No soldering experience — all connections via jumper wires, breadboard, and screw terminals. No soldering required in Phases 1–3.
 * Buck converter output **must be verified at exactly 5V with a multimeter before ever connecting to the Pi** (Pi 3B max input 5.25V).
 * L298N: 2 motors per channel — left motors together on OUT1/OUT2, right motors together on OUT3/OUT4.
-* Pi 3B GPIO is 3.3V logic; Arduino Uno R4 Minima is also 3.3V logic — direct serial connection is safe.
+* Pi 3B GPIO is 3.3V logic; the Arduino Uno R4 Minima is 5V logic. The Pi<->Arduino link uses USB (`/dev/ttyACM0`), which is safe regardless of logic level. Never wire the Arduino's raw UART TX pin directly to a Pi GPIO RX pin: 5V into a 3.3V-only pin can damage the Pi. A GPIO UART link would need a logic-level shifter (or a divider on the Arduino TX -> Pi RX line).
 * Arduino R4 Minima max GPIO current is 8mA — never connect motors directly to pins, always via L298N.
 * NS chassis motor voltage range is 6–9V — powered directly from the 7.4V pack via L298N, no separate regulation needed for motors.
 * Photo interrupter sensors need 3.3V or 5V supply plus a digital input pin on the Arduino — one per motor.
