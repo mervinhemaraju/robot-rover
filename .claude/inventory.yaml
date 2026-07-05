@@ -114,8 +114,8 @@ owned:
   - item: Raspberry Pi Camera Module v2 (8MP)
     qty: 1
     source: Pi Hut (UK)
-    status: received
-    notes: Standard CSI ribbon, fits Pi 3B directly
+    status: in_use
+    notes: Connected to Pi 3B CSI port, detected as imx219, test photo verified. Box also contained a Pi Zero adapter ribbon (unused) and a lens focus ring tool (kept, factory focus is fine)
 
   - item: 20W Adjustable DC-DC Buck Converter w/ digital display
     qty: 1

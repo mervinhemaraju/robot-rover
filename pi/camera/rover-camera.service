@@ -1,0 +1,31 @@
+# systemd unit for the rover MJPEG camera stream server.
+#
+# Install on the Pi:
+#   sudo cp rover-camera.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now rover-camera.service
+#
+# Adjust WorkingDirectory / ExecStart if you deploy somewhere other than
+# ~/rover/pi/camera. Requirements are installed with:
+#   pip install --user --break-system-packages -r requirements.txt
+# picamera2 comes from apt:
+#   sudo apt install -y python3-picamera2 --no-install-recommends
+
+[Unit]
+Description=Rover MJPEG camera stream server
+After=network-online.target
+Wants=network-online.target
+# Keep retrying at boot even if the camera stack is slow to come up.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=th3pl4gu3
+WorkingDirectory=/home/th3pl4gu3/rover/pi/camera
+Environment=HTTP_PORT=8080
+ExecStart=/usr/bin/python3 main.py
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

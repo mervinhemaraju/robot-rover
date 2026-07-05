@@ -1,0 +1,5 @@
+# picamera2 is NOT listed here on purpose: it is tied to the system libcamera
+# stack and must come from apt, not pip:
+#   sudo apt install -y python3-picamera2 --no-install-recommends
+aiohttp==3.11.16
+structlog==24.4.0
