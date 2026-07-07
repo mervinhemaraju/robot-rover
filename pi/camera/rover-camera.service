@@ -23,6 +23,10 @@ Type=simple
 User=th3pl4gu3
 WorkingDirectory=/home/th3pl4gu3/rover/pi/camera
 Environment=HTTP_PORT=8080
+# The camera is physically mounted upside down on this rover; both flips
+# together give a true 180-degree rotation (vflip alone would mirror the image).
+Environment=CAM_HFLIP=1
+Environment=CAM_VFLIP=1
 ExecStart=/usr/bin/python3 main.py
 Restart=always
 RestartSec=2
