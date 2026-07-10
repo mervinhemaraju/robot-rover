@@ -141,21 +141,78 @@ owned:
     status: received
     notes: CE/FCC/RoHS certified, USB-C input
 
+  - item: Soldering iron (small)
+    qty: 1
+    source: Already owned
+    status: received
+    notes: Model/wattage TBC. Owner has no soldering experience yet; first
+      planned use is header pins on the DRV8871 boards. Check solder wire
+      (rosin core) is on hand before the boards arrive.
+
 to_buy:
+  - item: Solder wire, rosin core (~0.8mm)
+    qty: 1 roll
+    source: local (Advanced M or similar) - to be bought before DRV8871s arrive
+    notes: Needed to attach the DRV8871 headers/screw terminals if they arrive
+      unsoldered (5-pack photos suggest they will).
+      60/40 leaded is easiest for a beginner; lead-free needs more heat.
+
+  - item: Resistor, 10k ohm
+    qty: ~10
+    source: local (Advanced M) - same errand as the solder wire
+    notes: First check the 5 unconfirmed resistors already owned (color bands
+      or DM850 resistance mode) - only buy what's missing. Two are for the
+      battery telemetry voltage divider (halves 8.4V max to 4.2V, safe for the
+      Arduino's 5V analog pin, Phase 3), four as photo interrupter pull-ups
+      (Phase 4). Dirt cheap, buy spares.
+
+  - item: 5V buck converter (second, for servos)
+    qty: 1
+    source: local (Advanced M) preferred, AliExpress fallback
+    notes: Check locally first - MP1584 or LM2596-based module, 5V output,
+      2-3A. Dedicated supply for the SG90s from the 7.4V pack, keeps servo
+      current spikes off the Pi's buck (Pi has undervoltage history). Servos
+      must NEVER be powered from the Arduino 5V pin. Common ground with the
+      Arduino required. If adjustable, set and verify 5V with the DM850 before
+      connecting servos.
 
 in_transit:
+  - item: Pi Camera CSI ribbon cable, 30cm
+    qty: 1
+    source: AliExpress
+    ordered: 2026-07-09
+    notes: Standard 15-pin 1mm-pitch CSI ribbon for Pi 3B + Camera v2 (not the
+      narrow 22-pin Pi Zero type). Replaces the stock ~15cm ribbon so the
+      camera can pan/tilt without strain. For Phase 5 pan-tilt mount.
+
+  - item: Pan-tilt kit with 2x SG90 servos (combined)
+    qty: 1
+    source: AliExpress (MUR 418.52, "PTZ with 2 servo" variant)
+    ordered: 2026-07-09
+    notes: Covers both the "SG90 servo motor x2" and "Pan-tilt bracket" deferred
+      items for Phase 5. Kit form - nylon bracket + screws + 2 blue 9g SG90s,
+      screwdriver assembly only. Camera v2 attaches to top plate via zip tie or
+      velcro (hole pattern won't match). Servos are for pan-tilt only; arms will
+      need MG996R or similar later.
+
+  - item: DRV8871 motor driver module
+    qty: 5
+    spare: 3
+    source: AliExpress (DIY NOW 5-pack, MUR 273.25)
+    ordered: 2026-07-09
+    notes: >-
+      MOSFET replacement for L298N (near-zero voltage drop, ~25-30% speed gain,
+      confirmed by DM850 test showing 1.73V lost in the L298N). Single-channel,
+      so 2 in use (one per motor side) + 3 spares. Up to ~3.6A with built-in
+      current limiting - ample stall headroom for 2 TT motors per board. Screw
+      terminals for motor + power wires; logic via header pins. Listing photos
+      show terminals and headers loose (exploded kit view), so expect to solder
+      them on arrival (beginner-level through-hole job, iron on hand).
+      Gotcha: minimum supply is 6.5V, so a deeply sagged 2S pack will
+      trip undervoltage lockout (recharge point). Motors stay limited to 2S
+      (7.4V) - the driver tolerates more but the TT motors max out at 9V.
 
 deferred:
-  - item: SG90 servo motor
-    qty: 2
-    planned_phase: Phase 5
-    notes: Pan-tilt camera mount
-
-  - item: Pan-tilt bracket (for SG90)
-    qty: 1
-    planned_phase: Phase 5
-    notes: Or buy as combined "Mini Pan-Tilt Kit" (Pi Hut) instead of separately
-
   - item: PCA9685 PWM expander
     qty: 1
     planned_phase: "Phase 5 (conditional)"
