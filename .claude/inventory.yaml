@@ -149,6 +149,36 @@ owned:
       planned use is header pins on the DRV8871 boards. Check solder wire
       (rosin core) is on hand before the boards arrive.
 
+  - item: 5V buck converter (second, for servos)
+    qty: 1
+    source: local (Advanced M)
+    status: received
+    notes: Check module type on arrival (MP1584 or LM2596-based), 5V output,
+      2-3A. Dedicated supply for the SG90s from the 7.4V pack, keeps servo
+      current spikes off the Pi's buck (Pi has undervoltage history). Servos
+      must NEVER be powered from the Arduino 5V pin. Common ground with the
+      Arduino required. If adjustable, must be set and verified at exactly 5V
+      with the DM850 before connecting servos.
+
+  - item: Pi Camera CSI ribbon cable, 30cm
+    qty: 1
+    source: AliExpress
+    status: received
+    notes: Standard 15-pin 1mm-pitch CSI ribbon for Pi 3B + Camera v2 (not the
+      narrow 22-pin Pi Zero type). Replaces the stock ~15cm ribbon so the
+      camera can pan/tilt without strain. For Phase 5 pan-tilt mount. Not yet
+      installed - camera still on stock ribbon.
+
+  - item: Pan-tilt kit with 2x SG90 servos (combined)
+    qty: 1
+    source: AliExpress (MUR 418.52, "PTZ with 2 servo" variant)
+    status: received
+    notes: Covers both the "SG90 servo motor x2" and "Pan-tilt bracket" deferred
+      items for Phase 5. Kit form - nylon bracket + screws + 2 blue 9g SG90s,
+      screwdriver assembly only. Camera v2 attaches to top plate via zip tie or
+      velcro (hole pattern won't match). Servos are for pan-tilt only; arms will
+      need MG996R or similar later. Not yet assembled or wired.
+
 to_buy:
   - item: Solder wire, rosin core (~0.8mm)
     qty: 1 roll
@@ -166,35 +196,7 @@ to_buy:
       Arduino's 5V analog pin, Phase 3), four as photo interrupter pull-ups
       (Phase 4). Dirt cheap, buy spares.
 
-  - item: 5V buck converter (second, for servos)
-    qty: 1
-    source: local (Advanced M) preferred, AliExpress fallback
-    notes: Check locally first - MP1584 or LM2596-based module, 5V output,
-      2-3A. Dedicated supply for the SG90s from the 7.4V pack, keeps servo
-      current spikes off the Pi's buck (Pi has undervoltage history). Servos
-      must NEVER be powered from the Arduino 5V pin. Common ground with the
-      Arduino required. If adjustable, set and verify 5V with the DM850 before
-      connecting servos.
-
 in_transit:
-  - item: Pi Camera CSI ribbon cable, 30cm
-    qty: 1
-    source: AliExpress
-    ordered: 2026-07-09
-    notes: Standard 15-pin 1mm-pitch CSI ribbon for Pi 3B + Camera v2 (not the
-      narrow 22-pin Pi Zero type). Replaces the stock ~15cm ribbon so the
-      camera can pan/tilt without strain. For Phase 5 pan-tilt mount.
-
-  - item: Pan-tilt kit with 2x SG90 servos (combined)
-    qty: 1
-    source: AliExpress (MUR 418.52, "PTZ with 2 servo" variant)
-    ordered: 2026-07-09
-    notes: Covers both the "SG90 servo motor x2" and "Pan-tilt bracket" deferred
-      items for Phase 5. Kit form - nylon bracket + screws + 2 blue 9g SG90s,
-      screwdriver assembly only. Camera v2 attaches to top plate via zip tie or
-      velcro (hole pattern won't match). Servos are for pan-tilt only; arms will
-      need MG996R or similar later.
-
   - item: DRV8871 motor driver module
     qty: 5
     spare: 3
