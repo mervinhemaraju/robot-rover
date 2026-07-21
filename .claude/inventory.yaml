@@ -179,6 +179,20 @@ owned:
       velcro (hole pattern won't match). Servos are for pan-tilt only; arms will
       need MG996R or similar later. Not yet assembled or wired.
 
+  - item: ESP32 dev board, 30-pin, CP2102 USB-C
+    qty: 1
+    source: local
+    status: received
+    notes: >-
+      Candidate replacement for the Arduino Uno R4 Minima (evaluated, not
+      scheduled - see the "Candidate hardware change" note in CLAUDE.md). Much
+      smaller footprint, 240MHz dual-core, hardware PCNT counters for the Phase 4
+      encoders, 20kHz PWM. 3.3V logic and NOT 5V tolerant on any pin. Enumerates
+      as /dev/ttyUSB0 (cp210x), so SERIAL_PORT must change. Battery telemetry
+      divider must be resized for 3.3V (approx 10k/3.3k, not 10k/10k) and must
+      use an ADC1 pin (GPIO 32-39): ADC2 is unusable with WiFi active. If adopted,
+      do it before telemetry is wired and in the same teardown as the DRV8871 swap.
+
 to_buy:
   - item: Solder wire, rosin core (~0.8mm)
     qty: 1 roll
