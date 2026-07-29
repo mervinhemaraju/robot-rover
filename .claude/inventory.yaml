@@ -62,6 +62,14 @@ owned:
     status: received
     notes: Values not yet confirmed. Need 47 ohm for external LED and 10k ohm for photo interrupter pull-ups in Phase 4.
 
+  - item: Resistor, 10k ohm
+    qty: 10
+    source: local (Advanced M)
+    status: received
+    notes: For the battery telemetry voltage divider (2x, halves 8.4V max to
+      4.2V, safe for the Arduino's 5V analog pin, Phase 3) and photo
+      interrupter pull-ups (4x, one per motor, Phase 4). Remainder are spares.
+
   - item: RGB LED, 4-pin common anode
     qty: 2
     source: local
@@ -152,13 +160,16 @@ owned:
   - item: 5V buck converter (second, for servos)
     qty: 1
     source: local (Advanced M)
-    status: received
-    notes: Check module type on arrival (MP1584 or LM2596-based), 5V output,
-      2-3A. Dedicated supply for the SG90s from the 7.4V pack, keeps servo
-      current spikes off the Pi's buck (Pi has undervoltage history). Servos
-      must NEVER be powered from the Arduino 5V pin. Common ground with the
-      Arduino required. If adjustable, must be set and verified at exactly 5V
-      with the DM850 before connecting servos.
+    status: in_use
+    notes: >-
+      Dedicated supply for the SG90s from the 7.4V pack, keeps servo current
+      spikes off the Pi's buck (Pi has undervoltage history). Servos must NEVER
+      be powered from the Arduino/ESP32 5V pin. Common ground with the MCU is
+      required - without it the servos twitch or sit dead even when every other
+      wire is correct. Set and verified at 5.0V with the DM850 before the servos
+      were connected; always adjust with the output disconnected, and trust the
+      meter over the module's own display.
+      In use since 2026-07-25 for the Phase 5 pan-tilt bench test.
 
   - item: Pi Camera CSI ribbon cable, 30cm
     qty: 1
@@ -172,26 +183,42 @@ owned:
   - item: Pan-tilt kit with 2x SG90 servos (combined)
     qty: 1
     source: AliExpress (MUR 418.52, "PTZ with 2 servo" variant)
-    status: received
-    notes: Covers both the "SG90 servo motor x2" and "Pan-tilt bracket" deferred
+    status: in_use
+    notes: >-
+      Covers both the "SG90 servo motor x2" and "Pan-tilt bracket" deferred
       items for Phase 5. Kit form - nylon bracket + screws + 2 blue 9g SG90s,
       screwdriver assembly only. Camera v2 attaches to top plate via zip tie or
       velcro (hole pattern won't match). Servos are for pan-tilt only; arms will
-      need MG996R or similar later. Not yet assembled or wired.
+      need MG996R or similar later.
+      ASSEMBLED and bench-tested 2026-07-25 - both servos confirmed sweeping
+      45-135 deg. Wire colours on this kit are red=5V, brown=GND, YELLOW=signal
+      (not orange as on some SG90s). Pan = bottom servo (rotates the whole
+      assembly); tilt = top servo (tips the camera plate). Colours are identical
+      on both servos, so identify them by physical position, not by wire.
+      On the R4 Minima - pan signal D10, tilt signal D11 (both free; the motor
+      sketch uses 4,5,6,7,8,9), stock Servo.h library, servo cable connectors are
+      female so M-M jumpers are needed to reach the Arduino headers.
+      Start narrow at 45-135 deg: the bracket hits its own frame before 0/180 and
+      a stalled SG90 draws stall current continuously and can burn out.
+      TODO before mounting: verify analogWrite on pins 5/6 still drives the motors
+      once Servo.h claims a hardware timer.
 
   - item: ESP32 dev board, 30-pin, CP2102 USB-C
     qty: 1
     source: local
     status: received
     notes: >-
-      Candidate replacement for the Arduino Uno R4 Minima (evaluated, not
-      scheduled - see the "Candidate hardware change" note in CLAUDE.md). Much
-      smaller footprint, 240MHz dual-core, hardware PCNT counters for the Phase 4
-      encoders, 20kHz PWM. 3.3V logic and NOT 5V tolerant on any pin. Enumerates
-      as /dev/ttyUSB0 (cp210x), so SERIAL_PORT must change. Battery telemetry
-      divider must be resized for 3.3V (approx 10k/3.3k, not 10k/10k) and must
-      use an ADC1 pin (GPIO 32-39): ADC2 is unusable with WiFi active. If adopted,
-      do it before telemetry is wired and in the same teardown as the DRV8871 swap.
+      Bench-prototyping board only. Evaluated as a replacement for the Arduino
+      Uno R4 Minima and REJECTED on 2026-07-25 - the R4 Minima is the committed
+      co-processor, do not re-propose the swap. Used successfully to bench-test
+      the Phase 5 pan-tilt servos before they moved to the R4 (GPIO 18 pan /
+      GPIO 19 tilt, ESP32Servo library by Kevin Harrington - the stock Servo
+      library does not compile for ESP32). Needs the esp32 core by Espressif
+      installed via Boards Manager; board "ESP32 Dev Module". Enumerates on
+      macOS as /dev/cu.usbserial-0001 (CP2102, driver built into macOS).
+      3.3V logic and NOT 5V tolerant on any pin. Must straddle the breadboard
+      centre gutter. Gotcha that cost an hour: a dead USB cable gave no power
+      LED and nothing at all on the USB bus - swap the cable first.
 
 to_buy:
   - item: Solder wire, rosin core (~0.8mm)
@@ -201,32 +228,30 @@ to_buy:
       unsoldered (5-pack photos suggest they will).
       60/40 leaded is easiest for a beginner; lead-free needs more heat.
 
-  - item: Resistor, 10k ohm
-    qty: ~10
-    source: local (Advanced M) - same errand as the solder wire
-    notes: First check the 5 unconfirmed resistors already owned (color bands
-      or DM850 resistance mode) - only buy what's missing. Two are for the
-      battery telemetry voltage divider (halves 8.4V max to 4.2V, safe for the
-      Arduino's 5V analog pin, Phase 3), four as photo interrupter pull-ups
-      (Phase 4). Dirt cheap, buy spares.
-
 in_transit:
-  - item: DRV8871 motor driver module
+  - item: DRV8871 motor driver module (original order - wrong item received)
     qty: 5
     spare: 3
     source: AliExpress (DIY NOW 5-pack, MUR 273.25)
     ordered: 2026-07-09
+    status: issue - wrong item received, not usable
     notes: >-
       MOSFET replacement for L298N (near-zero voltage drop, ~25-30% speed gain,
       confirmed by DM850 test showing 1.73V lost in the L298N). Single-channel,
       so 2 in use (one per motor side) + 3 spares. Up to ~3.6A with built-in
       current limiting - ample stall headroom for 2 TT motors per board. Screw
-      terminals for motor + power wires; logic via header pins. Listing photos
-      show terminals and headers loose (exploded kit view), so expect to solder
-      them on arrival (beginner-level through-hole job, iron on hand).
+      terminals for motor + power wires; logic via header pins.
       Gotcha: minimum supply is 6.5V, so a deeply sagged 2S pack will
       trip undervoltage lockout (recharge point). Motors stay limited to 2S
       (7.4V) - the driver tolerates more but the TT motors max out at 9V.
+      Order from DIY NOW store arrived as the wrong item - replacement chosen:
+      DRV8871 module from Hongtu Technology (AliExpress, MUR 61.90/unit, 5.0
+      rating but only 1 review / 118 sold - lower track record than the
+      SaSa Home Store alternative that was also considered, but user decided
+      to go with Hongtu on 2026-07-29). Same specs verified (DRV8871 chip,
+      6.5-45V, 3.6A peak, screw terminals + unsoldered header, single-channel).
+      Not yet ordered - quantity TBC, original plan was 2 in use + 3 spares
+      (5 total).
 
 deferred:
   - item: PCA9685 PWM expander
