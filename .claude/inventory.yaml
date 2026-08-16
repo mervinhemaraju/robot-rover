@@ -212,48 +212,49 @@ owned:
       centre gutter. Gotcha that cost an hour: a dead USB cable gave no power
       LED and nothing at all on the USB bus - swap the cable first.
 
-to_buy:
   - item: Solder wire, rosin core (~0.8mm)
     qty: 1 roll
-    source: local (Advanced M or similar) - to be bought before DRV8871s arrive
-    notes: Needed to attach the DRV8871 headers/screw terminals if they arrive
-      unsoldered (5-pack photos suggest they will).
-      60/40 leaded is easiest for a beginner; lead-free needs more heat.
-
-in_transit:
+    source: local (Advanced M or similar)
+    status: received
+    notes: Bought before the DRV8871s arrived, for attaching headers/screw
+      terminals if unsoldered. 60/40 leaded is easiest for a beginner;
+      lead-free needs more heat. Not yet used.
 
   - item: Resistor assortment, 1/4W through-hole, E12 series (~100R to 10k)
-    quantity: 1
+    qty: 1
+    source: local
+    status: received
     notes: 600pcs metal film kit, 1% tolerance, 30 values (10R-1M) x 20pcs
       each, boxed and labeled. For the resistor divider that replaces the
       optocoupler on the gate-status sense line (see
       docs/decisions/0002-resistor-divider-over-optocoupler.md). Specific
       divider values still to be picked once the CP80 LED terminal is
-      measured under load in Phase 3.
-      
-  - item: DRV8871 motor driver module (original order - wrong item received)
-    qty: 5
-    spare: 3
-    source: AliExpress (DIY NOW 5-pack, MUR 273.25)
-    ordered: 2026-07-09
-    status: issue - wrong item received, not usable
+      measured under load in Phase 3. Separate from the earlier 5-piece
+      "Resistors" entry above (values TBC, 47R/10k candidates for LED and
+      photo interrupter pull-ups).
+
+  - item: DRV8871 motor driver module (Hongtu Technology replacement)
+    qty: 3
+    spare: 1
+    source: AliExpress (Hongtu Technology, MUR 61.90/unit)
+    ordered: 2026-07-29
+    status: received
     notes: >-
       MOSFET replacement for L298N (near-zero voltage drop, ~25-30% speed gain,
       confirmed by DM850 test showing 1.73V lost in the L298N). Single-channel,
-      so 2 in use (one per motor side) + 3 spares. Up to ~3.6A with built-in
+      so 2 in use (one per motor side) + 1 spare. Up to ~3.6A with built-in
       current limiting - ample stall headroom for 2 TT motors per board. Screw
       terminals for motor + power wires; logic via header pins.
       Gotcha: minimum supply is 6.5V, so a deeply sagged 2S pack will
       trip undervoltage lockout (recharge point). Motors stay limited to 2S
       (7.4V) - the driver tolerates more but the TT motors max out at 9V.
-      Order from DIY NOW store arrived as the wrong item - replacement chosen:
-      DRV8871 module from Hongtu Technology (AliExpress, MUR 61.90/unit, 5.0
-      rating but only 1 review / 118 sold - lower track record than the
-      SaSa Home Store alternative that was also considered, but user decided
-      to go with Hongtu on 2026-07-29). Same specs verified (DRV8871 chip,
-      6.5-45V, 3.6A peak, screw terminals + unsoldered header, single-channel).
-      Not yet ordered - quantity TBC, original plan was 2 in use + 3 spares
-      (5 total).
+      Replaces the original DIY NOW 5-pack order (MUR 273.25, ordered
+      2026-07-09), which arrived as the wrong item and was not usable.
+      Not yet soldered/wired - solder wire on hand, not yet used.
+
+to_buy:
+
+in_transit:
 
 deferred:
   - item: PCA9685 PWM expander
